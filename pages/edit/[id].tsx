@@ -3,7 +3,6 @@ import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 
-
 import { IndexButton } from "../../components/navigation/IndexButton";
 
 interface Clip {
@@ -24,7 +23,6 @@ interface Clip {
 }
 
 const clip_input_list = [
-  "clip_id",
   "gMapsLink",
   "name",
   "group",
@@ -37,6 +35,7 @@ const clip_input_list = [
   "isUploadedTikTok",
   "isUploadedInstagram",
   "ymusic_id",
+  "clip_id",
   // "streetviewVideo",
 ] as const;
 
@@ -45,22 +44,23 @@ function InputList({ clip }: { clip: Clip }) {
 
   const input_fields = clip_input_list.map((field) =>
     field === "clip_id" ? (
-      <li key={clip[field]}>
-        {field}:
-        <input
-          readOnly
-          name={field}
-          placeholder={field}
-          defaultValue={clip[field]}
-        />
-        <br /> <br />
-      </li>
-    ) : (
-      <div key={field}>
-        {field}:
-        <input name={field} placeholder={field} defaultValue={clip[field]} />
-        <br />
+
+      <div key={field} className="form-control w-full max-w-xs">
+            <label className="label">
+              <span className="label-text">{field}</span>
+            </label>
+            <input name={field} disabled readOnly type="text" placeholder={field} defaultValue={clip[field]} className="input input-bordered w-full max-w-xs input-sm" />
       </div>
+
+    ) : (
+
+      <div key={field} className="form-control w-full max-w-xs">
+        <label className="label">
+          <span className="label-text">{field}</span>
+        </label>
+        <input name={field} type="text" placeholder={field} defaultValue={clip[field]} className="input input-bordered w-full max-w-xs input-sm" />
+      </div>
+
     )
   );
 
@@ -100,7 +100,7 @@ function InputList({ clip }: { clip: Clip }) {
     event.preventDefault();
     // const data = () => {
     let fetch_dict: Clip = {};
-
+    console.log(event.target["clip_id"].value)
     for (let key of clip_input_list) {
       if (key.includes("is" as const)) {
         if (event.target[key].value === "false") {
@@ -136,7 +136,7 @@ function InputList({ clip }: { clip: Clip }) {
           <section>
             <div {...getRootProps()}>
               <input {...getInputProps()} />
-              <p>Drag 'n' drop streetviewclip</p>
+              <p>Drag n drop streetviewclip</p>
             </div>
           </section>
         )}
@@ -147,7 +147,7 @@ function InputList({ clip }: { clip: Clip }) {
   return (
     <>
       <form onSubmit={handleData}>
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {input_fields}
         </div>
         <br />
@@ -165,7 +165,6 @@ function InputList({ clip }: { clip: Clip }) {
 const Edit: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  console.log(id);
   const baseURL = "http://127.0.0.1:8000";
 
   const [response_clip, setResponse] = useState<Clip>();
@@ -178,7 +177,7 @@ const Edit: NextPage = () => {
           "Content-Type": "application/json",
         },
       });
-      const dict = await response.json(); 
+      const dict = await response.json();
       setResponse(dict);
     } catch (e) {
       console.log(e);
@@ -210,13 +209,20 @@ const Edit: NextPage = () => {
   function Video() {
     return (
       <>
-        <div>
-          <video
-            width="320"
-            height="240"
-            src={`${baseURL}/getStreetviewVideo/${id}.mp4`}
-            controls
-          ></video>
+        <div className="sm:pl-4 p-4">
+          <div className="sm:mockup-phone">
+            <div className="sm:camera camera"></div>
+            <div className="display">
+              <div className="artboard artboard-demo phone-1">
+                <video
+                  width="320"
+                  height="240"
+                  src={`${baseURL}/getStreetviewVideo/${id}.mp4`}
+                  controls
+                ></video>
+              </div>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -224,21 +230,22 @@ const Edit: NextPage = () => {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 md:grid-rows-2 grid-cols-1">
+      <IndexButton />
+      <div className="flex flex-col sm:flex-row justify-evenly w-full">
+        <div>
         <InputList clip={response_clip} />
-        <div className="row-span-2">
+        </div>
+        <div >
           <Video />
         </div>
-        <div className="">
-          <button
-            className="btn btn-error btn-wide"
-            onClick={() => delete_clip(response_clip)}
-          >
-            Delete
-          </button>
-          <IndexButton />
-        </div>
       </div>
+      <br/>
+      <button
+        className="btn btn-error btn-wide"
+        onClick={() => delete_clip(response_clip)}
+      >
+        Delete
+      </button>
     </>
   );
 };
