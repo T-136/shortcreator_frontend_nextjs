@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 function Create_new_clip_button() {
   const router = useRouter();
@@ -11,6 +11,7 @@ function Create_new_clip_button() {
   }
 
   async function receive_data(data: { [key: string]: string }) {
+    
     try {
       const response = await fetch(`${baseURL}/edit/${data.clip_id}`, {
         method: "GET",

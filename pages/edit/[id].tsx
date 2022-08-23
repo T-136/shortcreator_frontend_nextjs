@@ -64,7 +64,7 @@ function InputList({ clip }: { clip: Clip }) {
     )
   );
 
-  const baseURL = "http://127.0.0.1:8000";
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
 
   const handleData = async (event: any) => {
     async function send_clip_dict(dict: Clip) {
@@ -115,9 +115,7 @@ function InputList({ clip }: { clip: Clip }) {
 
     // fetch_dict = fetch_dict as Clip
     send_clip_dict(fetch_dict);
-    // return fetch_dict
 
-    // }
 
     router.push("/");
     return "hello";
@@ -165,7 +163,7 @@ function InputList({ clip }: { clip: Clip }) {
 const Edit: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const baseURL = "http://127.0.0.1:8000";
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
 
   const [response_clip, setResponse] = useState<Clip>();
 

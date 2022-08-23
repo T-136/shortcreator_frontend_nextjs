@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { IndexButton } from "../components/navigation/IndexButton";
 
 
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL
 
 interface Clip {
   gMapsLink?: string;
@@ -50,6 +50,7 @@ function ListClips(ammount: Showall) {
   }
 
   async function show_all_clips() {
+    console.log(baseURL)
     console.log(ammount);
     const response = await fetch(`${baseURL}/showall`, {
       method: "GET",
