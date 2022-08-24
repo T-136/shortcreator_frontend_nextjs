@@ -4,23 +4,8 @@ import { useEffect, useState } from "react";
 import Dropzone from "react-dropzone";
 
 import { IndexButton } from "../../components/navigation/IndexButton";
+import {Clip} from "../../public/interfaces"
 
-interface Clip {
-  gMapsLink?: string;
-  name?: string;
-  videotext?: string;
-  start?: number;
-  isRenderd?: boolean;
-  isUploadedTikTok?: boolean;
-  ymusic_id?: any;
-  group?: string;
-  clip_id?: number;
-  latlong?: string;
-  stop?: number;
-  isUploadedYt?: boolean;
-  isUploadedInstagram?: boolean;
-  streetviewVideo?: any;
-}
 
 const clip_input_list = [
   "gMapsLink",
@@ -36,6 +21,7 @@ const clip_input_list = [
   "isUploadedInstagram",
   "ymusic_id",
   "clip_id",
+  "ymusic_title"
   // "streetviewVideo",
 ] as const;
 
@@ -99,7 +85,7 @@ function InputList({ clip }: { clip: Clip }) {
 
     event.preventDefault();
     // const data = () => {
-    let fetch_dict: Clip = {};
+    let fetch_dict: Clip = {clip_id: event.target["clip_id"].value};
     console.log(event.target["clip_id"].value)
     for (let key of clip_input_list) {
       if (key.includes("is" as const)) {

@@ -3,26 +3,9 @@ import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { IndexButton } from "../components/navigation/IndexButton";
-
+import {Clip} from "../public/interfaces"
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-
-interface Clip {
-  gMapsLink?: string;
-  name?: string;
-  videotext?: string;
-  start?: number;
-  isRenderd?: boolean;
-  isUploadedTikTok?: boolean;
-  ymusic_id?: any;
-  group?: string;
-  clip_id: number;
-  latlong?: string;
-  stop?: number;
-  isUploadedYt?: boolean;
-  isUploadedInstagram?: boolean;
-  streetviewVideo?: any
-}
 
 function sortByClipId(clips: Array<{ [key: string]: string }>) {
   return clips.sort(
@@ -50,7 +33,6 @@ function ListClips(ammount: Showall) {
   }
 
   async function show_all_clips() {
-    console.log(baseURL)
     console.log(ammount);
     const response = await fetch(`${baseURL}/showall`, {
       method: "GET",
@@ -112,15 +94,6 @@ interface Showall {
 function DownloadClips(){
 
   async function sendFolderData(){
-    // const response =  await fetch(`${baseURL}/requestfolder`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(checked_clips)
-    // })
-    // let res = await response.json()
-    // console.log(res)
     let command = "python main.py -f"
     for (const x of checked_clips){
       command += " "
