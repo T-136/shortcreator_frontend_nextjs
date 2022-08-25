@@ -69,6 +69,7 @@ function InputList({ clip }: { clip: Clip }) {
           alert(e);
         }
       }
+      dict.clip_id = Number(dict.clip_id)
       try {
         const response = await fetch(`${baseURL}/write_edit`, {
           method: "POST",
