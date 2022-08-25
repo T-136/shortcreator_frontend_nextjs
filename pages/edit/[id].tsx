@@ -70,6 +70,8 @@ function InputList({ clip }: { clip: Clip }) {
         }
       }
       dict.clip_id = Number(dict.clip_id)
+      dict.start = Number(dict.start)
+      dict.stop = Number(dict.stop)
       try {
         const response = await fetch(`${baseURL}/write_edit`, {
           method: "POST",
@@ -78,7 +80,7 @@ function InputList({ clip }: { clip: Clip }) {
           },
           body: JSON.stringify(dict),
         });
-        const answer = await response.json();
+        // const answer = await response.json();
       } catch (e) {
         alert(e);
       }
