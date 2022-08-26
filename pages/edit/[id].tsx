@@ -64,7 +64,7 @@ function InputList({ clip }: { clip: Clip }) {
             },
             body: video,
           });
-          const answer = await response.json();
+          // const answer = await response.json();
         } catch (e) {
           alert(e);
         }
